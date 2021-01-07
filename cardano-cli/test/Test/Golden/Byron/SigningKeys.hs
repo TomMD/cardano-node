@@ -12,7 +12,9 @@ import qualified Data.ByteString.Lazy as LB
 
 import qualified Cardano.Crypto.Signing as Crypto
 
+import           Cardano.CLI.Byron.Key (readByronSigningKey)
 import           Cardano.CLI.Byron.Legacy (decodeLegacyDelegateKey)
+import           Cardano.CLI.Shelley.Commands
 
 import           Hedgehog (Property, checkParallel, discover, success)
 import           Hedgehog.Internal.Property (failWith)
@@ -30,6 +32,20 @@ prop_deserialise_NonLegacy_Signing_Key = propertyOnce $ do
   skeyBs <- liftIO $ LB.readFile "test/data/golden/byron/keys/byron.skey"
   case deserialiseFromBytes Crypto.fromCBORXPrv skeyBs of
     Left deSerFail -> failWith Nothing $ show deSerFail
+    Right _ -> success
+
+prop_deserialise_NonLegacy_Signing_Key_API :: Property
+prop_deserialise_NonLegacy_Signing_Key_API = propertyOnce $ do
+  eFailOrWit <- liftIO . runExceptT $ readByronSigningKey NonLegacyByronKeyFormat "test/data/golden/byron/keys/byron.skey"
+  case eFailOrWit of
+    Left keyFailure -> failWith Nothing $ show keyFailure
+    Right _ -> success
+
+prop_deserialiseLegacy_Signing_Key_API :: Property
+prop_deserialiseLegacy_Signing_Key_API = propertyOnce $ do
+  eFailOrWit <- liftIO . runExceptT $ readByronSigningKey LegacyByronKeyFormat "test/data/golden/byron/keys/legacy.skey"
+  case eFailOrWit of
+    Left keyFailure -> failWith Nothing $ show keyFailure
     Right _ -> success
 
 -- -----------------------------------------------------------------------------
