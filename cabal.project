@@ -1,4 +1,4 @@
-index-state: 2021-01-01T00:00:00Z
+index-state: 2021-01-08T00:00:00Z
 
 packages:
     cardano-api
@@ -87,12 +87,6 @@ package io-sim-classes
 -- git checkout HEAD "$(git rev-parse --show-toplevel)"/cabal.project
 -- sed -ni '1,/--- 8< ---/ p' "$(git rev-parse --show-toplevel)"/cabal.project
 -- Please do not put any `source-repository-package` clause above this line.
-
-source-repository-package
-  type: git
-  location: https://github.com/ddssff/listlike
-  tag: fc051ef219305194422254d36fdcc18de8fb736c
-  --sha256: 1dxcgi6d5bnczvpl4ws0ab63spz0nmm8ibdixl4hwbzirfvj866b
 
 source-repository-package
   type: git
